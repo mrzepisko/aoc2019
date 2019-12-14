@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using AdventOfCode2019.Intcode.Commands;
 
 namespace AdventOfCode2019.Intcode
 {
@@ -15,8 +16,9 @@ namespace AdventOfCode2019.Intcode
 
         private readonly int[] source;
 
-        public int[] Source => source;
-        
-        public int this[int addr] => source[addr];
+        public Context Prepare()
+        {
+            return Context.Initialize(source);
+        }
     }
 }

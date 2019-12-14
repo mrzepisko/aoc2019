@@ -4,24 +4,33 @@ namespace AdventOfCode2019.Intcode.Commands
 {
     public class Context
     {
-        public int PC { get; set; }
         private readonly Memory memory;
-        private readonly Input input;
+        private readonly Stream input;
+        private readonly Stream output;
+
+        public int PC { get; set; }
+        public int CurrentInstruction => ReadMemory(PC);
+        
+        public Stream Output => output;
+        public Stream Input => input;
+
 
         #region ctors
 
-        private Context(Memory memory, Input input)
+        private Context(Memory memory, Stream input, Stream output)
         {
             PC = 0;
             this.memory = memory;
             this.input = input;
+            this.output = output;
         }
 
-        public static Context Initialize(InteropProgram program)
+        public static Context Initialize(int[] source)
         {
-            Memory memory = Memory.Load(program.Source);
-            Input input = Input.Initialize();
-            return new Context(memory, input);
+            Memory memory = Memory.Load(source);
+            Stream input = Stream.Initialize();
+            Stream output = Stream.Initialize();
+            return new Context(memory, input, output);
         }
 
         #endregion
@@ -40,14 +49,6 @@ namespace AdventOfCode2019.Intcode.Commands
         public void WriteMemory(int addr, int value)
         {
             memory[addr] = value;
-        }
-        #endregion
-
-        #region input
-
-        public int ReadInput()
-        {
-            return input.Read();
         }
         #endregion
     }

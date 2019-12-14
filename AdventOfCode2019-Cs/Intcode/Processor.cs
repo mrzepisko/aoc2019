@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using AdventOfCode2019.Intcode.Commands;
 
@@ -13,14 +12,6 @@ namespace AdventOfCode2019.Intcode
         {
             availableCommands = new Dictionary<int, Command>(size);
         }
-        
-        public Processor(List<Command> commands) : this(commands.Count)
-        {
-            foreach (Command c in commands)
-            {
-                availableCommands.Add(c.OpCode, c);
-            }
-        }
 
         public Processor AddCommand(Command command)
         {
@@ -29,33 +20,25 @@ namespace AdventOfCode2019.Intcode
             return this;
         }
 
-        public int Execute(InteropProgram program, params int[] programParams)
+        public int Execute(Context ctx, params int[] programParams)
         {
-            using (var execution = Run(program, programParams))
-            {
-                execution.MoveNext();
-                var context = execution.Current;
-                while (execution.MoveNext())
-                {
-                    context = execution.Current;
-                }
-
-                return context.ReadMemory(0);
-            }
-        }
-        private IEnumerator<Context> Run(InteropProgram program, params int[] programParams)
-        {
-            //copy program into memory
-            Context ctx = Context.Initialize(program);
+            //write params
             for (int i = 0; i < programParams.Length; i++)
             {
                 ctx.WriteMemory(1 + i, programParams[i]);
             }
-            yield return ctx;
+            using (var execution = Run(ctx, programParams))
+            {
+                while (execution.MoveNext()) { }
+                return ctx.ReadMemory(0);
+            }
+        }
+        private IEnumerator<Context> Run(Context ctx, params int[] programParams)
+        {
             bool advance = true;
             while (advance)
             {
-                int op = ctx.ReadMemory(ctx.PC);
+                int op = ctx.CurrentInstruction % 100;
                 var command = GetCommand(op);
                 advance = command.Execute(ctx);
                 yield return ctx;
@@ -81,7 +64,9 @@ namespace AdventOfCode2019.Intcode
             Processor proc = new Processor();
             proc.AddCommand(new AdditionCmd())
                 .AddCommand(new MultiplicationCmd())
-                .AddCommand(new TerminateCommand());
+                .AddCommand(new TerminateCommand())
+                .AddCommand(new SetValueCmd())
+                .AddCommand(new OutputValueCmd());
             return proc;
         }
     }

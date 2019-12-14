@@ -5,24 +5,15 @@ namespace AdventOfCode2019.Intcode.Commands
 {
     public abstract class Command
     {
-        private readonly int opCode;
         private readonly int[] parameters;
-        
-        private int paramCount => parameters.Length;
-        
-        public int OpCode => opCode;
-        public int Size => paramCount + 1;
-        
-        protected Command(string definition)
+
+        protected Command(int paramCount)
         {
-            parameters = new int[definition.Length - 2];
-            opCode = int.Parse(definition.Substring(definition.Length - 2, 2));
-            for (int i = 0; i < paramCount; i++)
-            {
-                parameters[i] = definition[definition.Length - 2 - i] - '0';
-            }
+            parameters = new int[paramCount];
         }
 
+        public int Size => parameters.Length + 1;
+        
         protected int ReadValue(Context ctx, int paramId)
         {
             int paramValue = ctx.ReadParam(paramId + 1);
@@ -31,16 +22,28 @@ namespace AdventOfCode2019.Intcode.Commands
 
         protected void WriteValue(Context ctx, int paramId, int value)
         {
-            if (parameters[paramId] == 1) throw new AccessViolationException();
+            if (parameters.Length > 0 && parameters[paramId] == 1) throw new AccessViolationException();
             int paramValue = ctx.ReadParam(paramId + 1);
             ctx.WriteMemory(paramValue, value);
         }
-        
-        public bool Execute(Context context)
+
+        public bool Execute(Context ctx)
         {
-            return context.ReadParam(0) != opCode || Process(context);
+            UpdateParameterModes(ctx);
+            return Process(ctx);
         }
-        
+
+        private void UpdateParameterModes(Context ctx)
+        {
+            var p = ctx.CurrentInstruction / 100; //drop op code
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                parameters[i] = p % 10;
+                p /= 10;
+            }
+        }
+
+        public abstract int OpCode { get; }
         protected abstract bool Process(Context ctx);
     }
 }

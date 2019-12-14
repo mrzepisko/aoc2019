@@ -5,7 +5,13 @@ namespace AdventOfCode2019.Intcode.Commands
     public class AdditionCmd : Command
     {
         private const int ParamIn1 = 0, ParamIn2 = 1, ParamOut = 2;
-        public AdditionCmd() : base("00001") { }
+
+        public override int OpCode => 1;
+
+        public AdditionCmd() : base(3)
+        {
+        }
+
         protected override bool Process(Context ctx)
         {
             int val1 = ReadValue(ctx, ParamIn1),

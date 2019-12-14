@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Schema;
 using AdventOfCode2019.Intcode;
+using AdventOfCode2019.Intcode.Commands;
 using AdventOfCode2019.Intcode.Wires;
 
 namespace AdventOfCode2019
@@ -29,7 +30,10 @@ namespace AdventOfCode2019
 
         public override string PartOne()
         {
-            throw new NotImplementedException();
+            Context ctx = program.Prepare();
+            ctx.Input.Write(1);
+            int result = processor.Execute(ctx);
+            return result.ToString();
         }
 
         public override string PartTwo()

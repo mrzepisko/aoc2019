@@ -23,7 +23,7 @@ namespace AdventOfCode2019
 
         public override string PartOne()
         {
-            int result = processor.Execute(program, 12, 02);
+            int result = processor.Execute(program.Prepare(), 12, 02);
             return result.ToString();
         }
 
@@ -36,7 +36,7 @@ namespace AdventOfCode2019
             {
                 for (int verb = 0; verb < 100; verb++)
                 {
-                    if (desiredOutput == processor.Execute(program, noun, verb))
+                    if (desiredOutput == processor.Execute(program.Prepare(), noun, verb))
                     {
                         result = noun * 100 + verb;
                     }

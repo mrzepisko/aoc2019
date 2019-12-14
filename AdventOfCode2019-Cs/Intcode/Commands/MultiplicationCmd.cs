@@ -5,7 +5,10 @@ namespace AdventOfCode2019.Intcode.Commands
     public class MultiplicationCmd : Command
     {
         private const int ParamIn1 = 0, ParamIn2 = 1, ParamOut = 2;
-        public MultiplicationCmd() : base("00002") { }
+        public MultiplicationCmd() : base(3) { }
+
+        public override int OpCode => 2;
+
         protected override bool Process(Context ctx)
         {
             int val1 = ReadValue(ctx, ParamIn1),

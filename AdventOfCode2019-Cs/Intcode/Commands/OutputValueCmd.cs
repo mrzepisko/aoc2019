@@ -2,17 +2,17 @@
 
 namespace AdventOfCode2019.Intcode.Commands
 {
-    public class SetValueCmd : Command
+    public class OutputValueCmd : Command
     {
         private const int ParamTargetId = 0;
-        public SetValueCmd() : base(1) { }
+        public OutputValueCmd() : base(1) { }
 
-        public override int OpCode => 3;
+        public override int OpCode => 4;
 
         protected override bool Process(Context ctx)
         {
-            int value = ctx.Input.Read();
-            WriteValue(ctx, ParamTargetId, value);
+            int value = ReadValue(ctx, ParamTargetId);
+            ctx.Output.Write(value);
             return true;
         }
     }
