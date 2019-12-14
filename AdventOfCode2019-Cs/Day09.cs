@@ -39,7 +39,7 @@ namespace AdventOfCode2019
         public override string PartTwo()
         {
             Context ctx = program.Prepare();
-            ctx.Input.Write(5);
+            ctx.Input.Write(2);
             long result = processor.Execute(ctx);
             return result.ToString();
         }
