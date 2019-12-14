@@ -33,6 +33,7 @@ namespace AdventOfCode2019.Intcode
                 return ctx.ReadMemory(0);
             }
         }
+
         private IEnumerator<Context> Run(Context ctx, params int[] programParams)
         {
             bool advance = true;

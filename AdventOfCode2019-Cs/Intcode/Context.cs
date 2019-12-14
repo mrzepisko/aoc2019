@@ -9,6 +9,7 @@ namespace AdventOfCode2019.Intcode.Commands
         private readonly Stream output;
 
         public int PC { get; set; }
+        public int RB { get; set; }
         public int CurrentInstruction => ReadMemory(PC);
         
         public Stream Output => output;
@@ -20,6 +21,7 @@ namespace AdventOfCode2019.Intcode.Commands
         private Context(Memory memory, Stream input, Stream output)
         {
             PC = 0;
+            RB = 0;
             this.memory = memory;
             this.input = input;
             this.output = output;

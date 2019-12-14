@@ -13,11 +13,23 @@ namespace AdventOfCode2019.Intcode.Commands
         }
 
         public int Size => parameters.Length + 1;
-        
+
         protected int ReadValue(Context ctx, int paramId)
         {
             int paramValue = ctx.ReadParam(paramId + 1);
-            return parameters[paramId] == 0 ? ctx.ReadMemory(paramValue) : paramValue;
+            int paramMode = parameters[paramId];
+            if (ParamMode.Positional == paramMode)
+            {
+                return ctx.ReadMemory(paramValue);
+            }
+            else if (ParamMode.Relative == paramMode)
+            {
+                return ctx.ReadMemory(ctx.RB + paramValue);
+            }
+            else
+            {
+                return paramValue;
+            }
         }
 
         protected void WriteValue(Context ctx, int paramId, int value)
@@ -45,5 +57,12 @@ namespace AdventOfCode2019.Intcode.Commands
 
         public abstract int OpCode { get; }
         protected abstract bool Process(Context ctx);
+
+        private static class ParamMode
+        {
+            public const int Positional = 0;
+            public const int Immediate = 1;
+            public const int Relative = 2;
+        }
     }
 }
