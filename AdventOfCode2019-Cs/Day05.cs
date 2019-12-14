@@ -32,7 +32,7 @@ namespace AdventOfCode2019
         {
             Context ctx = program.Prepare();
             ctx.Input.Write(1);
-            int result = processor.Execute(ctx);
+            long result = processor.Execute(ctx);
             return result.ToString();
         }
 
@@ -40,7 +40,7 @@ namespace AdventOfCode2019
         {
             Context ctx = program.Prepare();
             ctx.Input.Write(5);
-            int result = processor.Execute(ctx);
+            long result = processor.Execute(ctx);
             return result.ToString();
         }
     }

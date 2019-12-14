@@ -8,9 +8,9 @@ namespace AdventOfCode2019.Intcode.Commands
         private readonly Stream input;
         private readonly Stream output;
 
-        public int PC { get; set; }
-        public int RB { get; set; }
-        public int CurrentInstruction => ReadMemory(PC);
+        public long PC { get; set; }
+        public long RB { get; set; }
+        public long CurrentInstruction => ReadMemory(PC);
         
         public Stream Output => output;
         public Stream Input => input;
@@ -27,7 +27,7 @@ namespace AdventOfCode2019.Intcode.Commands
             this.output = output;
         }
 
-        public static Context Initialize(int[] source)
+        public static Context Initialize(long[] source)
         {
             Memory memory = Memory.Load(source);
             Stream input = Stream.Initialize();
@@ -38,17 +38,17 @@ namespace AdventOfCode2019.Intcode.Commands
         #endregion
 
         #region memory
-        public int ReadParam(int offset)
+        public long ReadParam(long offset)
         {
             return memory[PC + offset];
         }
 
-        public int ReadMemory(int addr)
+        public long ReadMemory(long addr)
         {
             return memory[addr];
         }
 
-        public void WriteMemory(int addr, int value)
+        public void WriteMemory(long addr, long value)
         {
             memory[addr] = value;
         }

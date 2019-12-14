@@ -5,25 +5,25 @@ namespace AdventOfCode2019.Intcode.Commands
 {
     public class Memory
     {
-        private readonly int[] value;
-        private Memory(int[] value)
+        private readonly long[] value;
+        private Memory(long[] value)
         {
-            this.value = new int[value.Length];
+            this.value = new long[value.Length];
             Array.Copy(value, this.value, value.Length);
         }
 
-        public int this[int addr]
+        public long this[long addr]
         {
             get => value[addr];
             set => this.value[addr] = value;
         }
         
-        public Memory(int memsize)
+        public Memory(long memsize)
         {
-            value = new int[memsize];
+            value = new long[memsize];
         }
 
-        public static Memory Load(int[] data)
+        public static Memory Load(long[] data)
         {
             return new Memory(data);
         }

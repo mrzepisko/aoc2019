@@ -7,11 +7,11 @@ namespace AdventOfCode2019.Intcode.Commands
 {
     public class Stream
     {
-        private Queue<int> queue;
+        private Queue<long> queue;
         
         public Stream()
         {
-            queue = new Queue<int>();
+            queue = new Queue<long>();
         }
 
         public static Stream Initialize()
@@ -19,13 +19,13 @@ namespace AdventOfCode2019.Intcode.Commands
             return new Stream();
         }
 
-        public void Write(int value)
+        public void Write(long value)
         {
             Console.WriteLine($@"W: {value}");
             queue.Enqueue(value);
         }
 
-        public int Read()
+        public long Read()
         {
             var value = queue.Dequeue();
             Console.WriteLine($@"R: {value}");

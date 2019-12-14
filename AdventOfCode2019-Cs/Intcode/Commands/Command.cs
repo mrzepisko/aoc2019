@@ -14,9 +14,9 @@ namespace AdventOfCode2019.Intcode.Commands
 
         public int Size => parameters.Length + 1;
 
-        protected int ReadValue(Context ctx, int paramId)
+        protected long ReadValue(Context ctx, int paramId)
         {
-            int paramValue = ctx.ReadParam(paramId + 1);
+            long paramValue = ctx.ReadParam(paramId + 1);
             int paramMode = parameters[paramId];
             if (ParamMode.Positional == paramMode)
             {
@@ -32,10 +32,10 @@ namespace AdventOfCode2019.Intcode.Commands
             }
         }
 
-        protected void WriteValue(Context ctx, int paramId, int value)
+        protected void WriteValue(Context ctx, int paramId, long value)
         {
             if (parameters.Length > 0 && parameters[paramId] == 1) throw new AccessViolationException();
-            int paramValue = ctx.ReadParam(paramId + 1);
+            long paramValue = ctx.ReadParam(paramId + 1);
             ctx.WriteMemory(paramValue, value);
         }
 
@@ -50,7 +50,7 @@ namespace AdventOfCode2019.Intcode.Commands
             var p = ctx.CurrentInstruction / 100; //drop op code
             for (int i = 0; i < parameters.Length; i++)
             {
-                parameters[i] = p % 10;
+                parameters[i] = (int) p % 10;
                 p /= 10;
             }
         }

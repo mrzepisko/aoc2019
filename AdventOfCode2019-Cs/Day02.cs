@@ -23,7 +23,7 @@ namespace AdventOfCode2019
 
         public override string PartOne()
         {
-            int result = processor.Execute(program.Prepare(), 12, 02);
+            long result = processor.Execute(program.Prepare(), 12, 02);
             return result.ToString();
         }
 

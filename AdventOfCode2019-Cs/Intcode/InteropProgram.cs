@@ -10,11 +10,11 @@ namespace AdventOfCode2019.Intcode
         public InteropProgram(string source)
         {
             this.source = source.Split(',')
-                .Select(int.Parse)
+                .Select(long.Parse)
                 .ToArray();
         }
 
-        private readonly int[] source;
+        private readonly long[] source;
 
         public Context Prepare()
         {

@@ -11,7 +11,7 @@ namespace AdventOfCode2019.Intcode.Commands
 
         protected override bool Process(Context ctx)
         {
-            int value = ctx.Input.Read();
+            long value = ctx.Input.Read();
             WriteValue(ctx, ParamTargetId, value);
             return true;
         }

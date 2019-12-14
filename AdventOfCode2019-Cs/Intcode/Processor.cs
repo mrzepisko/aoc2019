@@ -6,11 +6,11 @@ namespace AdventOfCode2019.Intcode
 {
     public class Processor
     {
-        private Dictionary<int, Command> availableCommands;
+        private Dictionary<long, Command> availableCommands;
 
         private Processor(int size = 0)
         {
-            availableCommands = new Dictionary<int, Command>(size);
+            availableCommands = new Dictionary<long, Command>(size);
         }
 
         public Processor AddCommand(Command command)
@@ -20,10 +20,10 @@ namespace AdventOfCode2019.Intcode
             return this;
         }
 
-        public int Execute(Context ctx, params int[] programParams)
+        public long Execute(Context ctx, params long[] programParams)
         {
             //write params
-            for (int i = 0; i < programParams.Length; i++)
+            for (long i = 0; i < programParams.Length; i++)
             {
                 ctx.WriteMemory(1 + i, programParams[i]);
             }
@@ -34,12 +34,12 @@ namespace AdventOfCode2019.Intcode
             }
         }
 
-        private IEnumerator<Context> Run(Context ctx, params int[] programParams)
+        private IEnumerator<Context> Run(Context ctx, params long[] programParams)
         {
             bool advance = true;
             while (advance)
             {
-                int op = ctx.CurrentInstruction % 100;
+                long op = ctx.CurrentInstruction % 100;
                 var command = GetCommand(op);
                 advance = command.Execute(ctx);
                 yield return ctx;
@@ -48,7 +48,7 @@ namespace AdventOfCode2019.Intcode
             yield break;
         }
 
-        private Command GetCommand(int op)
+        private Command GetCommand(long op)
         {
             if (availableCommands.TryGetValue(op, out var cmd))
             {

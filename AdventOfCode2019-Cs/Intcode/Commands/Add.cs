@@ -14,7 +14,7 @@ namespace AdventOfCode2019.Intcode.Commands
 
         protected override bool Process(Context ctx)
         {
-            int val1 = ReadValue(ctx, ParamIn1),
+            long val1 = ReadValue(ctx, ParamIn1),
                 val2 = ReadValue(ctx, ParamIn2);
 
             WriteValue(ctx, ParamOut, val1 + val2);
