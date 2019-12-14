@@ -34,36 +34,32 @@ namespace AdventOfCode2019.Intcode
             using (var execution = Run(program, programParams))
             {
                 execution.MoveNext();
-                var memory = execution.Current;
-                int[] lastMemo = memory;
+                var context = execution.Current;
                 while (execution.MoveNext())
                 {
-                    lastMemo = execution.Current;
+                    context = execution.Current;
                 }
 
-                return lastMemo[0];
+                return context.ReadMemory(0);
             }
         }
-        private IEnumerator<int[]> Run(InteropProgram program, params int[] programParams)
+        private IEnumerator<Context> Run(InteropProgram program, params int[] programParams)
         {
             //copy program into memory
-            int[] memory = new int[program.Source.Length];
-            Array.Copy(program.Source, memory, program.Source.Length);
-            //copy params into memory
+            Context ctx = Context.Initialize(program);
             for (int i = 0; i < programParams.Length; i++)
             {
-                memory[1 + i] = programParams[i];
+                ctx.WriteMemory(1 + i, programParams[i]);
             }
-            yield return memory;
-            int pc = 0;
+            yield return ctx;
             bool advance = true;
             while (advance)
             {
-                int op = memory[pc];
+                int op = ctx.ReadMemory(ctx.PC);
                 var command = GetCommand(op);
-                advance = command.Execute(pc, ref memory);
-                yield return memory;
-                pc += command.Size;
+                advance = command.Execute(ctx);
+                yield return ctx;
+                ctx.PC += command.Size;
             }
             yield break;
         }

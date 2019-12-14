@@ -1,33 +1,46 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 
-namespace AdventOfCode2019.Intcode
+namespace AdventOfCode2019.Intcode.Commands
 {
     public abstract class Command
     {
         private readonly int opCode;
-        private readonly int paramCount;
-
+        private readonly int[] parameters;
+        
+        private int paramCount => parameters.Length;
+        
         public int OpCode => opCode;
         public int Size => paramCount + 1;
-        protected Command(int opCode, int paramCount)
+        
+        protected Command(string definition)
         {
-            this.opCode = opCode;
-            this.paramCount = paramCount;
+            parameters = new int[definition.Length - 2];
+            opCode = int.Parse(definition.Substring(definition.Length - 2, 2));
+            for (int i = 0; i < paramCount; i++)
+            {
+                parameters[i] = definition[definition.Length - 2 - i] - '0';
+            }
+        }
+
+        protected int ReadValue(Context ctx, int paramId)
+        {
+            int paramValue = ctx.ReadParam(paramId + 1);
+            return parameters[paramId] == 0 ? ctx.ReadMemory(paramValue) : paramValue;
+        }
+
+        protected void WriteValue(Context ctx, int paramId, int value)
+        {
+            if (parameters[paramId] == 1) throw new AccessViolationException();
+            int paramValue = ctx.ReadParam(paramId + 1);
+            ctx.WriteMemory(paramValue, value);
         }
         
-        public bool Execute(int addr, ref int[] memo)
+        public bool Execute(Context context)
         {
-            return memo[addr] != opCode || Process(addr, ref memo);
+            return context.ReadParam(0) != opCode || Process(context);
         }
-
-        private int GetValue(int operation, int offset)
-        {
-            return operation & offset;
-        }
-        protected abstract bool Process(int addr, ref int[] memo);
-
-        protected int AddrIn1(int addr, int[] memo) => memo[addr + 1];
-        protected int AddrIn2(int addr, int[] memo) => memo[addr + 2];
-        protected int AddrOut(int addr, int[] memo) => memo[addr + 3];
+        
+        protected abstract bool Process(Context ctx);
     }
 }

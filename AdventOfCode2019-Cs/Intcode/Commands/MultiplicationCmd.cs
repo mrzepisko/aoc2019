@@ -1,17 +1,17 @@
-﻿namespace AdventOfCode2019.Intcode.Commands
+﻿using System.Collections.Generic;
+
+namespace AdventOfCode2019.Intcode.Commands
 {
     public class MultiplicationCmd : Command
     {
-        public MultiplicationCmd() : base(2, 3) { }
-        protected override bool Process(int addr, ref int[] memo)
+        private const int ParamIn1 = 0, ParamIn2 = 1, ParamOut = 2;
+        public MultiplicationCmd() : base("00002") { }
+        protected override bool Process(Context ctx)
         {
-            int addrIn1 = AddrIn1(addr, memo),
-                addrIn2 = AddrIn2(addr, memo),
-                addrOut = AddrOut(addr, memo);
+            int val1 = ReadValue(ctx, ParamIn1),
+                val2 = ReadValue(ctx, ParamIn2);
 
-            int val1 = memo[addrIn1],
-                val2 = memo[addrIn2];
-            memo[addrOut] = val1 * val2;
+            WriteValue(ctx, ParamOut, val1 * val2);
             return true;
         }
     }

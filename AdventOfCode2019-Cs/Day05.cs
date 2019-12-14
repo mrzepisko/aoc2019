@@ -11,10 +11,20 @@ namespace AdventOfCode2019
     public class Day05 : Day
     {
         public override string Name => "--- Day 5: Sunny with a Chance of Asteroids ---";
-        public override string Input { get; }
+        public override string Input => InputResources.Day05;
+
+        private Processor processor;
+        private InteropProgram program;
+
+
+        public Day05()
+        {
+            processor = Processor.CreateBasic();
+        }
+
         public override void ParseInput(string input)
         {
-            throw new NotImplementedException();
+            program = new InteropProgram(input);
         }
 
         public override string PartOne()
