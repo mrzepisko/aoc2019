@@ -2,13 +2,13 @@
 
 namespace AdventOfCode2019.Intcode.Commands
 {
-    public class AdditionCmd : Command
+    public class Add : Command
     {
         private const int ParamIn1 = 0, ParamIn2 = 1, ParamOut = 2;
 
         public override int OpCode => 1;
 
-        public AdditionCmd() : base(3)
+        public Add() : base(3)
         {
         }
 

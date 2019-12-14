@@ -62,11 +62,17 @@ namespace AdventOfCode2019.Intcode
         public static Processor CreateBasic()
         {
             Processor proc = new Processor();
-            proc.AddCommand(new AdditionCmd())
+            proc.AddCommand(new Add())
                 .AddCommand(new MultiplicationCmd())
                 .AddCommand(new TerminateCommand())
+                
                 .AddCommand(new SetValueCmd())
-                .AddCommand(new OutputValueCmd());
+                .AddCommand(new OutputValueCmd())
+                
+                .AddCommand(new Jit())
+                .AddCommand(new Jif())
+                .AddCommand(new Lt())
+                .AddCommand(new Eq());
             return proc;
         }
     }
