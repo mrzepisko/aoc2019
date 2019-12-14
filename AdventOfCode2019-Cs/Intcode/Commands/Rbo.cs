@@ -8,7 +8,7 @@
         public override int OpCode => 9;
         protected override bool Process(Context ctx)
         {
-            var value = ctx.ReadParam(ParamId);
+            var value = ReadValue(ctx, ParamId);
             ctx.RB += value;
             return true;
         }

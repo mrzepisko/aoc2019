@@ -73,7 +73,9 @@ namespace AdventOfCode2019.Intcode
                 .AddCommand(new Jit())
                 .AddCommand(new Jif())
                 .AddCommand(new Lt())
-                .AddCommand(new Eq());
+                .AddCommand(new Eq())
+                
+                .AddCommand(new Rbo());
             return proc;
         }
     }

@@ -7,11 +7,12 @@ namespace AdventOfCode2019.Intcode
 {
     public class InteropProgram
     {
-        public InteropProgram(string source)
+        public InteropProgram(string source, int extraMemory = 0)
         {
             this.source = source.Split(',')
                 .Select(long.Parse)
                 .ToArray();
+            Array.Resize(ref this.source, source.Length + extraMemory);
         }
 
         private readonly long[] source;

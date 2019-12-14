@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AdventOfCode2019.Intcode.Commands
 {
@@ -16,6 +17,7 @@ namespace AdventOfCode2019.Intcode.Commands
 
         protected long ReadValue(Context ctx, int paramId)
         {
+            if (parameters.Length < paramId) throw new InvalidEnumArgumentException("Tried to read params for non-argument operation");
             long paramValue = ctx.ReadParam(paramId + 1);
             int paramMode = parameters[paramId];
             if (ParamMode.Positional == paramMode)
@@ -34,9 +36,23 @@ namespace AdventOfCode2019.Intcode.Commands
 
         protected void WriteValue(Context ctx, int paramId, long value)
         {
-            if (parameters.Length > 0 && parameters[paramId] == 1) throw new AccessViolationException();
+            if (parameters.Length < paramId) throw new InvalidEnumArgumentException("Tried to read params for non-argument operation");
+            long paramMode = parameters[paramId];
             long paramValue = ctx.ReadParam(paramId + 1);
-            ctx.WriteMemory(paramValue, value);
+            long addr;
+            if (ParamMode.Positional == paramMode)
+            {
+                addr = paramValue;
+            }
+            else if (ParamMode.Relative == paramMode)
+            {
+                addr = ctx.RB + paramValue;
+            }
+            else
+            {
+                throw new AccessViolationException();
+            }
+            ctx.WriteMemory(addr, value);
         }
 
         public bool Execute(Context ctx)
