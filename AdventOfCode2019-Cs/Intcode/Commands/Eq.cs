@@ -5,7 +5,7 @@
         private const int ParamId1 = 0, ParamId2 = 1, ParamId3 = 2;
         public Eq() : base(3) { }
 
-        public override int OpCode => 7;
+        public override int OpCode => 8;
         protected override bool Process(Context ctx)
         {
             var val1 = ReadValue(ctx, ParamId1);

@@ -38,7 +38,10 @@ namespace AdventOfCode2019
 
         public override string PartTwo()
         {
-            throw new NotImplementedException();
+            Context ctx = program.Prepare();
+            ctx.Input.Write(5);
+            int result = processor.Execute(ctx);
+            return result.ToString();
         }
     }
 }
