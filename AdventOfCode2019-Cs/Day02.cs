@@ -23,26 +23,26 @@ namespace AdventOfCode2019
 
         public override string PartOne()
         {
-            using (var execution = processor.Run(program))
-            {
-                execution.MoveNext();
-                var memory = execution.Current;
-                memory[1] = 12;
-                memory[2] = 02;
-                int[] lastMemo = memory;
-                while (execution.MoveNext())
-                {
-                    lastMemo = execution.Current;
-                }
-
-                return lastMemo[0].ToString();
-            }
-            
+            int result = processor.Execute(program, 12, 02);
+            return result.ToString();
         }
 
         public override string PartTwo()
         {
-            return "";
+            const int desiredOutput = 19690720;
+
+            int result = 0;
+            for (int noun = 0; noun < 100; noun++)
+            {
+                for (int verb = 0; verb < 100; verb++)
+                {
+                    if (desiredOutput == processor.Execute(program, noun, verb))
+                    {
+                        result = noun * 100 + verb;
+                    }
+                }
+            }
+            return result.ToString();
         }
     }
 }
